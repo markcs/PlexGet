@@ -6,13 +6,13 @@ Simple script to download files from remote Plex servers, including friends Plex
 
 The following perl modules are required.  Make sure you have them installed.  Google if you don't know how.
 
-⋅⋅* HTTP::Tiny
-⋅⋅* XML::LibXML
-⋅⋅* XML::Simple
-⋅⋅* File::Path
-⋅⋅* LWP::UserAgent
-⋅⋅* Encode
-⋅⋅* File::HomeDir
+  * HTTP::Tiny
+  * XML::LibXML
+  * XML::Simple
+  * File::Path
+  * LWP::UserAgent
+  * Encode
+  * File::HomeDir
 
 This script creates a configuration file, which you can manually edit if you wish.  The file is located in the users home directory and called .plex.ini.  Adjust the file name in the script if you don't like it.
 
