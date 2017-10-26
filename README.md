@@ -18,7 +18,7 @@ This script creates a configuration file, which you can manually edit if you wis
 
 The configuration file has the following format:
 ```
-token = <script token>
+token = <script token. This is automatically generated during the first run of the script>
 Movielibrary = <directory to store downloaded movies>
 TVlibrary = <directory to store downloaded tv shows>
 ```
