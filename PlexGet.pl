@@ -72,9 +72,7 @@ sub getServerList {
 		$pmsdata->{$pmsdata->{name}}->{clientIdentifier} = $server->findvalue('./@clientIdentifier');
 		$pmsdata->{$pmsdata->{name}}->{accessToken} = $server->findvalue('./@accessToken');
 		foreach my $conn ($server->findnodes('./Connection')) {
-			if ($conn->findnodes('./@uri') =~ /$pmsdata->{$pmsdata->{name}}->{publicAddress}/ ) {
 				$pmsdata->{$pmsdata->{name}}->{uri} = $conn->findvalue('./@uri');
-			}
 		}
 
 	$count++;
@@ -167,7 +165,8 @@ sub getMovieURL {
 	my $count = 0;
 
 	foreach my $list ($dom->findnodes('/MediaContainer/Video')) {
-		my $size = sprintf "%.2f", ($list->findvalue('./Media/Part/@size') / 1073741824);	
+		my $size = "Unknown";
+    $size = sprintf "%.2f", ($list->findvalue('./Media/Part/@size') / 1073741824) if ($list->findvalue('./Media/Part/@size') ne "");	
 		push(@key,$list->findvalue('./Media/Part/@key'));
 		push(@title,$list->findvalue('./@title'));
 		push(@year,$list->findvalue('./@year'));
@@ -189,7 +188,7 @@ sub getMovieURL {
 #	if ( !-d $directory ) {
 #		make_path "$directory" or die "Failed to create path: $directory";
 #	}
-	$url = $mainurl.$key[$input]."?X-Plex-Token=".$servertoken;
+	$url = $mainurl.$key[$input]."?download=1&X-Plex-Token=".$servertoken;
 #	my $curlcmd = "curl -s $url -o '$outputfile'";
 #	my $wgetcmd = "wget -c -q --show-progress -O '$outputfile' $url";
     return($url,$title[$input],$year[$input],$container[$input]);
@@ -234,7 +233,7 @@ sub getTVURL {
 #	if ( !-d $directory ) {
 #		make_path "$directory" or die "Failed to create path: $directory";
 #	}
-	$url = $serverurl.$key[$input]."?X-Plex-Token=".$servertoken;
+	$url = $serverurl.$key[$input]."?download=1&X-Plex-Token=".$servertoken;
 #	my $curlcmd = "curl -s $url -o '$outputfile'";
 #	my $wgetcmd = "wget -c -q --show-progress -O '$outputfile' $url";
     #return($url,$outputfile);
@@ -249,7 +248,7 @@ sub wget {
 
     $SIG{INT} = sub { unlink $log_f; exit };
     if (my $pid = fork) {
-    system "wget -o $log_f --progress=bar:force -c -O '$outputfile' $url";
+    system "wget -o $log_f --progress=bar:force -c -O '$outputfile' '$url'";
     } else {
     die "cannot fork: $!" unless defined $pid;
     }
